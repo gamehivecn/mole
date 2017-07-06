@@ -1,0 +1,90 @@
+Quick-Cocos2dx-Community C++ support ready.
+
+------------------------------------------------
+
+LOAD LUA FILE: F:/myGame/mole/src/main.lua
+
+------------------------------------------------
+
+[LUA-print] ===========================================================
+
+[LUA-print]               LOAD QUICK FRAMEWORK
+
+[LUA-print] ===========================================================
+
+[LUA-print] [INFO] 
+
+[LUA-print] [INFO] # DEBUG                        = 1
+
+[LUA-print] [INFO] #
+
+[LUA-print] [INFO] # device.platform              = windows
+
+[LUA-print] [INFO] # device.model                 = unknown
+
+[LUA-print] [INFO] # device.language              = cn
+
+[LUA-print] [INFO] # device.writablePath          = F:\myGame\mole\
+
+[LUA-print] [INFO] # device.directorySeparator    = \
+
+[LUA-print] [INFO] # device.pathSeparator         = ;
+
+[LUA-print] [INFO] #
+
+[LUA-print] [INFO] # CONFIG_SCREEN_AUTOSCALE      = FIXED_WIDTH
+
+[LUA-print] [INFO] # CONFIG_SCREEN_WIDTH          = 640.00
+
+[LUA-print] [INFO] # CONFIG_SCREEN_HEIGHT         = 960.00
+
+[LUA-print] [INFO] # display.widthInPixels        = 620.00
+
+[LUA-print] [INFO] # display.heightInPixels       = 930.00
+
+[LUA-print] [INFO] # display.contentScaleFactor   = 0.97
+
+[LUA-print] [INFO] # display.width                = 640.00
+
+[LUA-print] [INFO] # display.height               = 960.00
+
+[LUA-print] [INFO] # display.cx                   = 320.00
+
+[LUA-print] [INFO] # display.cy                   = 480.00
+
+[LUA-print] [INFO] # display.left                 = 0.00
+
+[LUA-print] [INFO] # display.right                = 640.00
+
+[LUA-print] [INFO] # display.top                  = 960.00
+
+[LUA-print] [INFO] # display.bottom               = 0.00
+
+[LUA-print] [INFO] # display.c_left               = -320.00
+
+[LUA-print] [INFO] # display.c_right              = 320.00
+
+[LUA-print] [INFO] # display.c_top                = 480.00
+
+[LUA-print] [INFO] # display.c_bottom             = -480.00
+
+[LUA-print] [INFO] #
+
+[LUA-print]  MyApp:run
+
+[LUA-print] ctor()
+
+[LUA-print] dump from: [string "F:/myGame/mole/src/app/DataManager.lua"]:31: in function 'init'
+
+[LUA-print] - "<var>" = {
+
+[LUA-print] -     "data" = "~f8~m2ìç%øfÓW}EG±∏r“‹Áe#∏å\Njï€Áˆî=«fúOﬁÊÇû5ÚúÜ@åM)«-}YP›IÌ◊Ä≤#å7[¿Ï‹ ô∑¥±Xytio¶3l^≤Q[lJ‡uô%ìÑ¿|™¬√4ûÀ7…?yª‘“:0'•ÙwqÍVŒB”‚©‰‡ùkõj(eŸ-Ü∏¸·›â%M`ô<L?\´˘ÈV÷[É)DåÙ;ï‹·ÂhÔcW˙ïßan∆£ÄPÉ†VÚ˙Ó„1í∞{ç
+
+[LUA-print] - }
+
+[LUA-print] dump from: [string "F:/myGame/mole/src/app/DataManager.lua"]:32: in function 'init'
+
+[LUA-print] - "<var>" = nil
+
+[LUA ERROR] [string "F:/myGame/mole/src/app/DataManager.lua"]:34: attempt to call field 'load' (a nil value)
+

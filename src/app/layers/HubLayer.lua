@@ -19,7 +19,7 @@ local UP_BAR = {
     },
     score = {
         text        = "0",
-        UILabelType = cc.ui.UILabel.LABEL_TYPE_BM,
+        UILabelType = 1,
         font        = "fonts/r.fnt",
         scale       = 0.6,
 --        size        = 30,
@@ -29,7 +29,7 @@ local UP_BAR = {
     },
     deepth = {
         text        = "0",
-        UILabelType = cc.ui.UILabel.LABEL_TYPE_BM,
+        UILabelType = 1,
         font        = "fonts/r.fnt",
         scale       = 0.6,
         align       = cc.TEXT_ALIGNMENT_RIGHT,
@@ -40,7 +40,7 @@ local UP_BAR = {
     },
     coin = {
         text        = "0",
-        UILabelType = cc.ui.UILabel.LABEL_TYPE_BM,
+        UILabelType = 1,
         font        = "fonts/r.fnt",
         scale       = 0.6,
 --        size        = 30,
@@ -59,7 +59,7 @@ local BOTTOM_BAR = {
     align = display.LEFT_BOTTOM,
 
     oxygenLabel = {
-        UILabelType = cc.ui.UILabel.LABEL_TYPE_BM,
+        UILabelType = 1,
         font        = "fonts/r.fnt",
 --        size        = 60,
         color       = cc.c3b(0, 0, 160),
@@ -87,7 +87,7 @@ local BOTTOM_BAR = {
         pos = {x=458,y=32},
     },
     gemLabel = {
-        UILabelType = cc.ui.UILabel.LABEL_TYPE_BM,
+        UILabelType = 1,
         font        = "fonts/r.fnt",
         scale       = 0.6,
         text        = "0",
@@ -183,7 +183,7 @@ function HubLayer:createBottomBar()
         :onButtonClicked(function(event) self:castSkill(elements.mushroom) end)
         :align(display.LEFT_BOTTOM, BOTTOM_BAR.skill1.pos.x, BOTTOM_BAR.skill1.pos.y)
         :addTo(self)
-    self.skillMushroomLabel = cc.ui.UILabel.new({UILabelType = cc.ui.UILabel.LABEL_TYPE_BM, font = "fonts/r.fnt",})
+    self.skillMushroomLabel = cc.ui.UILabel.new({UILabelType = 1, font = "fonts/r.fnt",})
         :align(display.LEFT_BOTTOM, BOTTOM_BAR.skill1.pos.x, BOTTOM_BAR.skill1.pos.y+3)
         :addTo(self)
     self.skillMushroomLabel:setScale(0.4)
@@ -196,7 +196,7 @@ function HubLayer:createBottomBar()
         :onButtonClicked(function(event) self:castSkill(elements.nut) end)
         :align(display.LEFT_BOTTOM, BOTTOM_BAR.skill2.pos.x, BOTTOM_BAR.skill2.pos.y)
         :addTo(self)
-    self.skillNutLabel = cc.ui.UILabel.new({UILabelType = cc.ui.UILabel.LABEL_TYPE_BM, font = "fonts/r.fnt",})
+    self.skillNutLabel = cc.ui.UILabel.new({UILabelType = 1, font = "fonts/r.fnt",})
         :align(display.LEFT_BOTTOM, BOTTOM_BAR.skill2.pos.x, BOTTOM_BAR.skill2.pos.y+3)
         :addTo(self)
     self.skillNutLabel:setScale(0.4)
@@ -209,7 +209,7 @@ function HubLayer:createBottomBar()
         :onButtonClicked(function(event) self:castSkill(elements.cola) end)
         :align(display.LEFT_BOTTOM, BOTTOM_BAR.skill3.pos.x, BOTTOM_BAR.skill3.pos.y)
         :addTo(self)
-    self.skillColaLabel = cc.ui.UILabel.new({UILabelType = cc.ui.UILabel.LABEL_TYPE_BM, font = "fonts/r.fnt",})
+    self.skillColaLabel = cc.ui.UILabel.new({UILabelType = 1, font = "fonts/r.fnt",})
         :align(display.LEFT_BOTTOM, BOTTOM_BAR.skill3.pos.x, BOTTOM_BAR.skill3.pos.y+3)
         :addTo(self)
     self.skillColaLabel:setScale(0.4)

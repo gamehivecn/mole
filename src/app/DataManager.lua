@@ -1,4 +1,3 @@
-local GameState = require("framework.cc.utils.GameState")
 DataManager = {}
 
 
@@ -19,12 +18,25 @@ DataManager.MUSIC_ON  ="music_on"
 DataManager.SOUND_ON  ="sound_on" 
 
 function DataManager.init()
-    GameState.init(onState, "gameInfo.dat", "key_diGET")
+    local secretKey = 'key_diGET'
+    local filename = 'gameInfo.dat'
+    local contents = io.readfile(filename)
+
+    local j = json.decode(contents)
+
+    local hash,s = j.h, j.s
+    local testHash = crypto.md5(s..secretKey)
+
+    local values = json.decode(s)
+    dump(values)
+    dump(DataManager.data)
+
     DataManager.load()
     -- 初始化成就 
     for k,v in pairs(DataManager.data._finished_achivements) do
          s_data.achivement[v].finished = true
     end
+
     --测试
     DataManager.data.gold = 10000
     DataManager.data.point = 1000
@@ -133,13 +145,9 @@ function onState(event)
         end
 end
 
-
-function DataManager.load()
-    GameState.load()
-end
-
 function DataManager.save()
-    if DataManager.data ~=nil then         
+    dump(DataManager.data)
+    if DataManager.data ~= nil then         
         GameState.save(DataManager.data)
     end
 end
