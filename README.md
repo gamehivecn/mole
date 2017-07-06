@@ -1,8 +1,9 @@
 ## 鼹鼠挖地
 ------
 
-基于 Quick-Cocos2dx-Community3.7 开发框架      
-Fork From: https://github.com/caohongtao/quick-cocos-demo
+- Fork From: https://github.com/caohongtao/quick-cocos-demo
+- 开发框架  ：Quick-Cocos2dx-Community3.7
+- 开源协议  ：Apache Licene 2.0
 
 ------
 
