@@ -2,7 +2,7 @@
 ------
 
 基于 Quick-Cocos2dx-Community3.7 开发框架      
-基于 https://github.com/caohongtao/quick-cocos-demo 重写。
+Fork From: https://github.com/caohongtao/quick-cocos-demo
 
 ------
 
