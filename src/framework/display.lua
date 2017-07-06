@@ -108,15 +108,14 @@ if CONFIG_SCREEN_AUTOSCALE and CONFIG_SCREEN_AUTOSCALE ~="NONE" then
         scaleX, scaleY = CONFIG_SCREEN_AUTOSCALE_CALLBACK(w, h, device.model)
     end
 
-    if CONFIG_SCREEN_AUTOSCALE == "FILL_ALL" then
+    if CONFIG_SCREEN_AUTOSCALE == "EXACT_FIT" then
+        scale = 1.0
+        glview:setDesignResolutionSize(CONFIG_SCREEN_WIDTH, CONFIG_SCREEN_HEIGHT, cc.ResolutionPolicy.EXACT_FIT)
+    elseif CONFIG_SCREEN_AUTOSCALE == "FILL_ALL" then
         CONFIG_SCREEN_WIDTH = w
         CONFIG_SCREEN_HEIGHT = h
         scale = 1.0
-        if cc.bPlugin_ then
-            glview:setDesignResolutionSize(CONFIG_SCREEN_WIDTH, CONFIG_SCREEN_HEIGHT, cc.ResolutionPolicy.NO_BORDER)
-        else
-            glview:setDesignResolutionSize(CONFIG_SCREEN_WIDTH, CONFIG_SCREEN_HEIGHT, cc.ResolutionPolicy.FILL_ALL)
-        end
+		glview:setDesignResolutionSize(CONFIG_SCREEN_WIDTH, CONFIG_SCREEN_HEIGHT, cc.ResolutionPolicy.SHOW_ALL)
     else
         if not scaleX or not scaleY then
             scaleX, scaleY = w / CONFIG_SCREEN_WIDTH, h / CONFIG_SCREEN_HEIGHT
@@ -263,9 +262,8 @@ display.DEFAULT_TTF_FONT_SIZE   = 24
 
 function display.newScene(name)
     local scene = cc.Scene:create()
-    scene:setNodeEventEnabled(true)
-    scene:setAutoCleanupEnabled()
     scene.name = name or "<unknown-scene>"
+	scene:setNodeEventEnabled(true)
     return scene
 end
 
@@ -282,12 +280,10 @@ end
 
 function display.newPhysicsScene(name)
     local scene = cc.Scene:createWithPhysics()
-    scene:setNodeEventEnabled(true)
-    scene:setAutoCleanupEnabled()
     scene.name = name or "<unknown-scene>"
+    scene:setNodeEventEnabled(true)
     return scene
 end
-
 
 -- start --
 
@@ -459,17 +455,9 @@ end
 -- end --
 
 function display.newLayer()
-    local layer
-
-    if cc.bPlugin_ then
-        layer = display.newNode()
-        layer:setContentSize(display.width, display.height)
-        layer:setTouchEnabled(true)
-    else
-        layer = cc.Layer:create()
-    end
-
-    return layer
+    local node = cc.Node:create()
+	node:setContentSize(cc.size(display.width, display.height))
+	return node
 end
 
 -- start --
@@ -484,22 +472,7 @@ end
 -- end --
 
 function display.newColorLayer(color)
-    local node
-
-    if cc.bPlugin_ then
-        node = display.newNode()
-        local layer = cc.LayerColor:create(color)
-        node:addChild(layer)
-        node:setTouchEnabled(true)
-        node:setTouchSwallowEnabled(true)
-
-        node.setContentSize = layer.setContentSize
-        node.getContentSize = layer.getContentSize
-    else
-        node = cc.LayerColor:create(color)
-    end
-
-    return node
+    return cc.LayerColor:create(color)
 end
 
 -- start --
@@ -522,9 +495,6 @@ Node 对象并不能显示对象，但可以作为其他显示对象的容器（
 local group = display.newNode()     -- 创建一个容器
 group:addChild(sprite1)             -- 添加显示对象到容器中
 group:addChild(sprite2)             -- 添加显示对象到容器中
-
--- 移动容器时，其中包含的子对象也会同时移动
-transition.moveBy(group, {time = 2.0, x = 100})
 
 ~~~
 
@@ -814,71 +784,6 @@ end
 -- start --
 
 --------------------------------
--- Create a Filtered Sprite
--- @function [parent=#display] newFilteredSprite
--- @param mixed filename As same a the first parameter for display.newSprite
--- @param mixed filters One of the following:
--- @param table params A or some parameters for Filter.
--- @return FilteredSprite#FilteredSprite ret (return value: cc.FilteredSprite)
-
--- end --
-
-function display.newFilteredSprite(filename, filters, params)
-    local __one = {class=cc.FilteredSpriteWithOne}
-    local __multi = {class=cc.FilteredSpriteWithMulti}
-    if not filters then return display.newSprite(filtename, nil,nil , __one) end
-    local __sp = nil
-    local __type = type(filters)
-    if __type == "userdata" then __type = tolua.type(filters) end
-    --print("display.newFSprite type:", __type)
-    if __type == "string" then
-        __sp = display.newSprite(filename, nil, nil, __one)
-        filters = filter.newFilter(filters, params)
-        __sp:setFilter(filters)
-    elseif __type == "table" then
-        assert(#filters > 1, "display.newFilteredSprite() - Please give me 2 or more filters!")
-        __sp = display.newSprite(filename, nil, nil, __multi)
-        -- treat filters as {"FILTER_NAME", "FILTER_NAME"}
-        if type(filters[1]) == "string" then
-            __sp:setFilters(filter.newFilters(filters, params))
-        else
-            -- treat filters as {Filter, Filter , ...}
-            local __filters = cc.Array:create()
-            for i in ipairs(filters) do
-                __filters:addObject(filters[i])
-            end
-            __sp:setFilters(__filters)
-        end
-    elseif __type == "Array" then
-        -- treat filters as Array(Filter, Filter, ...)
-        __sp = display.newSprite(filename, nil, nil, __multi)
-        __sp:setFilters(filters)
-    else
-        -- treat filters as Filter
-        __sp = display.newSprite(filename, nil, nil, __one)
-        __sp:setFilter(filters)
-    end
-    return __sp
-end
-
--- start --
-
---------------------------------
--- Create a Gray Sprite by FilteredSprite
--- @function [parent=#display] newGraySprite
--- @param mixed filename As same a the first parameter for display.newSprite
--- @param table params As same as the third parameter for display.newFilteredSprite
--- @return FilteredSprite#FilteredSprite ret (return value: cc.FilteredSprite)
-
--- end --
-
-function display.newGraySprite(filename, params)
-    return display.newFilteredSprite(filename, "GRAY", params)
-end
-
--- start --
-
---------------------------------
 -- 创建并返回一个空的 DrawNode 对象
 -- @function [parent=#display] newDrawNode
 -- @return DrawNode#DrawNode ret (return value: cc.DrawNode) 
@@ -1070,7 +975,7 @@ shape = display.newLine(point表, [参数])
 ~~~ lua
 
 -- 创建一个线宽为2，颜色为红色，从(10,10)到(100,100)的线段
-local shape3 = display.newLine({(10, 10), (100,100)},
+local shape3 = display.newLine({{10, 10}, {100,100}},
     {borderColor = cc.c4f(1.0, 0.0, 0.0, 1.0),
     borderWidth = 1})
 
@@ -1147,22 +1052,7 @@ function display.newPolygon(points, params, drawNode)
     end
 
     drawNode = drawNode or cc.DrawNode:create()
-    drawNode:drawPolygon(pts, {
-        fillColor = fillColor,
-        borderWidth = borderWidth,
-        borderColor = borderColor
-    })
-
-    if drawNode then
-        function drawNode:setLineStipple()
-        end
-
-        function drawNode:setLineStippleEnabled()
-        end
-
-        function drawNode:setLineColor(color)
-        end
-    end
+    drawNode:drawPolygon(pts, #pts, fillColor, borderWidth, borderColor)
     return drawNode
 end
 
@@ -1302,12 +1192,17 @@ function display.newTTFLabel(params)
     local label
     if cc.FileUtils:getInstance():isFileExist(font) then
         label = cc.Label:createWithTTF(text, font, size, dimensions, textAlign, textValign)
+        if label then
+            label:setColor(color)
+        end
     else
         label = cc.Label:createWithSystemFont(text, font, size, dimensions, textAlign, textValign)
+        if label then
+            label:setTextColor(color)
+        end
     end
 
     if label then
-        label:setColor(color)
         if x and y then label:setPosition(x, y) end
     end
 
@@ -1427,7 +1322,7 @@ function display.addSpriteFrames(plistFilename, image, handler)
         else
             sharedSpriteFrameCache:addSpriteFrames(plistFilename, image)
         end
-        cc.Texture2D:setDefaultAlphaPixelFormat(cc.TEXTURE2D_PIXEL_FORMAT_RGBA8888)
+        cc.Texture2D:setDefaultAlphaPixelFormat(cc.TEXTURE2_D_PIXEL_FORMAT_BGR_A8888)
     else
         if async then
             sharedTextureCache:addImageAsync(image, asyncHandler)
@@ -1468,7 +1363,7 @@ end
 
 设置材质格式。
 
-为了节约内存，我们会使用一些颜色品质较低的材质格式，例如针对背景图使用 cc.TEXTURE2D_PIXEL_FORMAT_RGB565 格式。
+为了节约内存，我们会使用一些颜色品质较低的材质格式，例如针对背景图使用 cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565 格式。
 
 display.setTexturePixelFormat() 可以指定材质文件的材质格式，这样在加载材质文件时就会使用指定的格式。
 
@@ -1796,7 +1691,15 @@ display.captureScreen(
 -- end --
 
 function display.captureScreen(callback, fileName)
-    cc.utils:captureScreen(callback, fileName)
+	sharedDirector:getRunningScene():captureScreen(function(image)
+		if image then
+			local path = cc.FileUtils:getInstance():getWritablePath() .. fileName
+			image:saveToFile(path)
+			callback(true, path)
+		else
+			callback(false)
+		end
+	end)
 end
 
 return display

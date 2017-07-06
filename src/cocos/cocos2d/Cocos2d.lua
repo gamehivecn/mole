@@ -174,7 +174,7 @@ function cc.pIsSegmentIntersect(pt1,pt2,pt3,pt4)
     local s,t,ret = 0,0,false
     ret,s,t =cc.pIsLineIntersect(pt1, pt2, pt3, pt4,s,t)
 
-    if ret and  s >= 0.0 and s <= 1.0 and t >= 0.0 and t <= 0.0 then
+    if ret and  s >= 0.0 and s <= 1.0 and t >= 0.0 and t <= 1.0 then
         return true;
     end
 
@@ -201,9 +201,8 @@ function cc.rect(_x,_y,_width,_height)
 end
 
 function cc.rectEqualToRect(rect1,rect2)
-    if ((rect1.x >= rect2.x) or (rect1.y >= rect2.y) or
-        ( rect1.x + rect1.width <= rect2.x + rect2.width) or
-        ( rect1.y + rect1.height <= rect2.y + rect2.height)) then
+    if ((rect1.x ~= rect2.x) or (rect1.y ~= rect2.y) or
+        (rect1.width ~= rect2.width) or (rect1.height ~= rect2.height)) then
         return false
     end
 
@@ -243,6 +242,16 @@ function cc.rectContainsPoint( rect, point )
     end
 
     return ret
+end
+
+function cc.rectContainsRect(rect1,rect2)
+    if ((rect1.x <= rect2.x) and (rect1.y <= rect2.y) and
+        (rect1.x + rect1.width >= rect2.x + rect2.width) and
+        (rect1.y + rect1.height >= rect2.y + rect2.height)) then
+        return true
+    end
+
+    return false
 end
 
 function cc.rectIntersectsRect( rect1, rect2 )

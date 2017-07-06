@@ -1,0 +1,17 @@
+**.idea
+**.gradle/
+**/build/
+**/obj/
+**.log
+**.DS_Store
+
+**.apk
+**/game.zip
+res_encrypt/
+
+**/user.dat
+**/userinfo.json
+game.dat
+level_test/
+res_encrypt
+resnew
